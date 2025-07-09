@@ -1,7 +1,6 @@
 package com.lopez.ecommerce_api.config;
 
-import com.lopez.ecommerce_api.config.filter.CustomAuthenticationFilter;
-import com.lopez.ecommerce_api.config.filter.CustomAuthorizationFilter;
+import com.lopez.ecommerce_api.config.filter.JwtFilter;
 import com.lopez.ecommerce_api.repository.UserRepository;
 import com.lopez.ecommerce_api.service.JwtService;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +10,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -19,26 +19,28 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
+@EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
 
     private final UserRepository userRepository;
+    private final JwtFilter jwtFilter;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationManager authManager, JwtService jwtService) throws Exception {
-        CustomAuthenticationFilter customAuthFilter = new CustomAuthenticationFilter(authManager, jwtService);
-        customAuthFilter.setFilterProcessesUrl("/api/login");
+    public SecurityFilterChain securityFilterChain(HttpSecurity http/*, AuthenticationManager authManager, JwtService jwtService*/) throws Exception {
+        //CustomAuthenticationFilter customAuthFilter = new CustomAuthenticationFilter(authManager, jwtService);
+        //customAuthFilter.setFilterProcessesUrl("/api/login");
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/login", "/api/refreshToken").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/user/save").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/api/users").hasRole("USER")
+                        .requestMatchers("/api/auth/login", "/api/auth/refresh-token").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/auth/user/save").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/auth/users").hasRole("USER")
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilter(customAuthFilter)
-                .addFilterBefore(new CustomAuthorizationFilter(jwtService), UsernamePasswordAuthenticationFilter.class);
+                //.addFilter(customAuthFilter)
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 

@@ -26,21 +26,17 @@ public class EcommerceApiApplication {
 	CommandLineRunner commandLineRunner(UserService userService) {
 		return args -> {
 			userService.saveRole(new Role(null, "ROLE_USER"));
-			userService.saveRole(new Role(null, "ROLE_MANAGER"));
 			userService.saveRole(new Role(null, "ROLE_ADMIN"));
-			userService.saveRole(new Role(null, "ROLE_SUPER_ADMIN"));
 
 			userService.saveUser(new User(null, "dhan paul", "dhan", "dhan@gmail.com", encoder.encode("1234"), new ArrayList<>()));
 			userService.saveUser(new User(null, "mark james", "james", "james@gmail.com", encoder.encode("1234"), new ArrayList<>()));
 			userService.saveUser(new User(null, "lyric ace", "lyric", "lyric@gmail.com", encoder.encode("1234"), new ArrayList<>()));
 			userService.saveUser(new User(null, "ace portgas", "ace", "ace@gmail.com", encoder.encode("1234"), new ArrayList<>()));
 
-			userService.addRoleToUser("dhan", "ROLE_USER");
-			userService.addRoleToUser("dhan", "ROLE_MANAGER");
-			userService.addRoleToUser("james", "ROLE_MANAGER");
-			userService.addRoleToUser("lyric", "ROLE_ADMIN");
-			userService.addRoleToUser("ace", "ROLE_SUPER_ADMIN");
-			userService.addRoleToUser("ace", "ROLE_ADMIN");
+			userService.addRoleToUser("dhan", "ROLE_ADMIN");
+			userService.addRoleToUser("james", "ROLE_USER");
+			userService.addRoleToUser("lyric", "ROLE_USER");
+			userService.addRoleToUser("ace", "ROLE_USER");
 			userService.addRoleToUser("ace", "ROLE_USER");
 		};
 	}
