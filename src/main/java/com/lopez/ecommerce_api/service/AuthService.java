@@ -2,25 +2,18 @@ package com.lopez.ecommerce_api.service;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lopez.ecommerce_api.dto.RequestAuthentication;
-import com.lopez.ecommerce_api.dto.ResponseAuthentication;
-import com.lopez.ecommerce_api.dto.ResponseRefreshToken;
+import com.lopez.ecommerce_api.dto.*;
+import com.lopez.ecommerce_api.model.Role;
 import com.lopez.ecommerce_api.model.User;
-import com.lopez.ecommerce_api.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
-import static org.springframework.http.HttpStatus.FORBIDDEN;
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +22,33 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final UserService userService;
     private final JwtService jwtService;
+
+    public ResponseRegister registerUser(RequestRegister register,
+                                         HttpServletRequest request) {
+        if(userService.existsByUsername(register.getUsername()) ) {
+            return ResponseRegister.builder().error("Username already exist").registered(false).build();
+        } else if (userService.existsByEmail(register.getEmail())) {
+            return ResponseRegister.builder().error("Email already exist").registered(false).build();
+        }
+        List<Role> roles = new ArrayList<>();
+        User user = User.builder()
+                .fullName(register.getFullName())
+                .username(register.getUsername())
+                .email(register.getEmail())
+                .password(passwordEncoder.encode(register.getPassword()))
+                .roles(roles)
+                .build();
+        user.getRoles().add(userService.findRoleByName("ROLE_CUSTOMER"));
+        userService.saveUser(user);
+
+        String accessToken = jwtService.generateAccessToken(request, user);
+        String refreshToken = jwtService.generateRefreshToken(request, user);
+        return ResponseRegister.builder()
+                .registered(true)
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .build();
+    }
 
     public ResponseAuthentication authenticateUser(RequestAuthentication requestLogin,
                                                    HttpServletRequest request) {

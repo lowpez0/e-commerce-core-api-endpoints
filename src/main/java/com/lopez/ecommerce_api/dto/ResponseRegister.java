@@ -10,10 +10,11 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ResponseRefreshToken {
+public class ResponseRegister {
 
-    private String accessToken;
     @JsonIgnore
     private String error;
-    private boolean valid;
+    private String accessToken;
+    private String refreshToken;
+    private boolean registered;
 }

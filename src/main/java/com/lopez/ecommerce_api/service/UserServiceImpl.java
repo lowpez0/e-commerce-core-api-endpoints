@@ -6,6 +6,7 @@ import com.lopez.ecommerce_api.repository.RoleRepository;
 import com.lopez.ecommerce_api.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,10 +20,12 @@ public class UserServiceImpl implements UserService {
 
     private final RoleRepository roleRepo;
     private final UserRepository userRepo;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public User saveUser(User user) {
         log.info("Saving new User {} to the database", user.getUsername());
+
         return userRepo.save(user);
     }
 
@@ -50,5 +53,20 @@ public class UserServiceImpl implements UserService {
     public List<User> getUsers() {
         log.info("Fetching list of Users from the database");
         return userRepo.findAll();
+    }
+
+    @Override
+    public boolean existsByUsername(String username) {
+        return userRepo.existsByUsername(username);
+    }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        return userRepo.existsByEmail(email);
+    }
+
+    @Override
+    public Role findRoleByName(String name) {
+        return roleRepo.findByName(name);
     }
 }

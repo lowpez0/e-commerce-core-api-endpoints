@@ -25,7 +25,7 @@ public class EcommerceApiApplication {
 	@Bean
 	CommandLineRunner commandLineRunner(UserService userService) {
 		return args -> {
-			userService.saveRole(new Role(null, "ROLE_USER"));
+			userService.saveRole(new Role(null, "ROLE_CUSTOMER"));
 			userService.saveRole(new Role(null, "ROLE_ADMIN"));
 
 			userService.saveUser(new User(null, "dhan paul", "dhan", "dhan@gmail.com", encoder.encode("1234"), new ArrayList<>()));
@@ -34,10 +34,10 @@ public class EcommerceApiApplication {
 			userService.saveUser(new User(null, "ace portgas", "ace", "ace@gmail.com", encoder.encode("1234"), new ArrayList<>()));
 
 			userService.addRoleToUser("dhan", "ROLE_ADMIN");
-			userService.addRoleToUser("james", "ROLE_USER");
-			userService.addRoleToUser("lyric", "ROLE_USER");
-			userService.addRoleToUser("ace", "ROLE_USER");
-			userService.addRoleToUser("ace", "ROLE_USER");
+			userService.addRoleToUser("james", "ROLE_CUSTOMER");
+			userService.addRoleToUser("lyric", "ROLE_CUSTOMER");
+			userService.addRoleToUser("ace", "ROLE_CUSTOMER");
+			userService.addRoleToUser("ace", "ROLE_CUSTOMER");
 		};
 	}
 

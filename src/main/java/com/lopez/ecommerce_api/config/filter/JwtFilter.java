@@ -3,7 +3,6 @@ package com.lopez.ecommerce_api.config.filter;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lopez.ecommerce_api.service.JwtService;
-import com.lopez.ecommerce_api.service.TokenBlacklistService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,23 +31,19 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class JwtFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
-    //private final TokenBlacklistService tokenBlacklistService;
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request,
                                     @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
-        if (request.getServletPath().equals("/api/auth/login") || request.getServletPath().equals("/api/auth/refresh-token")) {
+        if (request.getServletPath().equals("/api/auth/login") || request.getServletPath().equals("/api/auth/refresh-token")
+                || request.getServletPath().equals("/api/auth/register")) {
             filterChain.doFilter(request, response);
         } else {
             String authorizationHeader = request.getHeader(AUTHORIZATION);
             if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
                 try {
                     String token = authorizationHeader.substring(7);
-                   /* if(tokenBlacklistService.isBlackListed(token)) {
-                        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token revoked");
-                        return;
-                    }*/
                     DecodedJWT decodedJWT = jwtService.isTokenValid(token);
 
                     String username = decodedJWT.getSubject();

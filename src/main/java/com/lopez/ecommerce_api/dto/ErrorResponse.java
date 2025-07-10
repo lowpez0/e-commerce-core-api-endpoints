@@ -1,19 +1,13 @@
 package com.lopez.ecommerce_api.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ResponseRefreshToken {
+public class ErrorResponse {
 
-    private String accessToken;
-    @JsonIgnore
     private String error;
-    private boolean valid;
 }
