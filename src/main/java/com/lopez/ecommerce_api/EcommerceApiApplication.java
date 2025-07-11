@@ -1,8 +1,11 @@
 package com.lopez.ecommerce_api;
 
+import com.lopez.ecommerce_api.dto.RequestProduct;
+import com.lopez.ecommerce_api.model.Product;
 import com.lopez.ecommerce_api.model.Role;
 import com.lopez.ecommerce_api.model.User;
 import com.lopez.ecommerce_api.service.UserService;
+import com.lopez.ecommerce_api.service.productservice.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -23,7 +26,7 @@ public class EcommerceApiApplication {
 	}
 
 	@Bean
-	CommandLineRunner commandLineRunner(UserService userService) {
+	CommandLineRunner commandLineRunner(UserService userService, ProductService productService) {
 		return args -> {
 			userService.saveRole(new Role(null, "ROLE_CUSTOMER"));
 			userService.saveRole(new Role(null, "ROLE_ADMIN"));
@@ -38,6 +41,22 @@ public class EcommerceApiApplication {
 			userService.addRoleToUser("lyric", "ROLE_CUSTOMER");
 			userService.addRoleToUser("ace", "ROLE_CUSTOMER");
 			userService.addRoleToUser("ace", "ROLE_CUSTOMER");
+
+			productService.saveProduct(new RequestProduct("Galaxy S25", "6.8\" AMOLED, 200MP camera", 1199.99, 15, "MOBILE"));
+			productService.saveProduct(new RequestProduct("iPhone 16 Pro", "A18 chip, titanium design", 1299.00, 10, "MOBILE"));
+			productService.saveProduct(new RequestProduct("Pixel 8 Pro", "Google Tensor G3, AI features", 999.00, 8, "MOBILE"));
+
+			productService.saveProduct(new RequestProduct("LG OLED C3", "65\" 4K Smart TV, 120Hz", 1799.50, 5, "TV"));
+			productService.saveProduct(new RequestProduct("Samsung QN90B", "Neo QLED 55\" with HDR", 1299.99, 7, "TV"));
+			productService.saveProduct(new RequestProduct("Sony Bravia XR", "83\" 8K Mini-LED", 4999.00, 3, "TV"));
+
+			productService.saveProduct(new RequestProduct("Dell UltraSharp 32", "4K USB-C monitor", 899.99, 12, "MONITOR"));
+			productService.saveProduct(new RequestProduct("LG UltraGear 27", "240Hz gaming monitor", 649.50, 9, "MONITOR"));
+			productService.saveProduct(new RequestProduct("Apple Studio Display", "5K Retina with camera", 1599.00, 6, "MONITOR"));
+
+			productService.saveProduct(new RequestProduct("AirPods Pro 2", "Active noise cancellation", 249.00, 25, "ACCESSORIES"));
+			productService.saveProduct(new RequestProduct("Logitech MX Keys", "Wireless ergonomic keyboard", 99.95, 18, "ACCESSORIES"));
+			productService.saveProduct(new RequestProduct("Samsung T7 SSD", "1TB portable SSD", 89.99, 30, "ACCESSORIES"));
 		};
 	}
 

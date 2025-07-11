@@ -35,7 +35,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/login", "/api/auth/refresh-token", "/api/auth/register").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/users").hasAnyRole("ADMIN", "CUSTOMER")
-                        .anyRequest().authenticated())
+                        .anyRequest().permitAll())
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 //.addFilter(customAuthFilter)
