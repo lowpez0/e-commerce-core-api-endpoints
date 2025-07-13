@@ -34,8 +34,8 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/login", "/api/auth/refresh-token", "/api/auth/register").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/users").hasAnyRole("ADMIN", "CUSTOMER")
-                        .anyRequest().permitAll())
+                        .anyRequest().authenticated())
+                        //.requestMatchers(HttpMethod.GET, "/api/users").hasAnyRole("ADMIN", "CUSTOMER"))
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 //.addFilter(customAuthFilter)
@@ -43,7 +43,7 @@ public class SecurityConfig {
         return http.build();
     }
 
-    @Bean
+   /* @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
@@ -51,7 +51,7 @@ public class SecurityConfig {
     @Bean
     public UserDetailsService userDetailsService() {
         return userRepository::findByUsername;
-    }
+    }*/
 
     @Bean
     public PasswordEncoder passwordEncoder() {

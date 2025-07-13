@@ -5,6 +5,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.lopez.ecommerce_api.dto.*;
 import com.lopez.ecommerce_api.model.Role;
 import com.lopez.ecommerce_api.model.User;
+import com.lopez.ecommerce_api.service.cartservice.CartService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,6 +23,7 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final UserService userService;
     private final JwtService jwtService;
+    private final CartService cartService;
 
     public ResponseRegister registerUser(RequestRegister register,
                                          HttpServletRequest request) {
@@ -30,17 +32,17 @@ public class AuthService {
         } else if (userService.existsByEmail(register.getEmail())) {
             return ResponseRegister.builder().error("Email already exist").registered(false).build();
         }
-        List<Role> roles = new ArrayList<>();
         User user = User.builder()
                 .fullName(register.getFullName())
                 .username(register.getUsername())
                 .email(register.getEmail())
                 .password(passwordEncoder.encode(register.getPassword()))
-                .roles(roles)
+                .roles(new ArrayList<>())
                 .build();
         user.getRoles().add(userService.findRoleByName("ROLE_CUSTOMER"));
         userService.saveUser(user);
-
+        userService.addCartToUser(register.getUsername()); // add a cart immediately right after a user signed up
+        //cartService.addCartToUser(register.getUsername());
         String accessToken = jwtService.generateAccessToken(request, user);
         String refreshToken = jwtService.generateRefreshToken(request, user);
         return ResponseRegister.builder()

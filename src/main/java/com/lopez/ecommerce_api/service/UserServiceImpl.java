@@ -1,16 +1,18 @@
 package com.lopez.ecommerce_api.service;
 
+import com.lopez.ecommerce_api.model.Cart;
 import com.lopez.ecommerce_api.model.Role;
 import com.lopez.ecommerce_api.model.User;
+import com.lopez.ecommerce_api.repository.CartRepository;
 import com.lopez.ecommerce_api.repository.RoleRepository;
 import com.lopez.ecommerce_api.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -20,7 +22,7 @@ public class UserServiceImpl implements UserService {
 
     private final RoleRepository roleRepo;
     private final UserRepository userRepo;
-    private final PasswordEncoder passwordEncoder;
+    private final CartRepository cartRepo;
 
     @Override
     public User saveUser(User user) {
@@ -68,5 +70,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public Role findRoleByName(String name) {
         return roleRepo.findByName(name);
+    }
+
+    @Override
+    public void addCartToUser(String username) {
+        User user = userRepo.findByUsername(username);
+        cartRepo.save(new Cart(null, user, 0.0));
     }
 }
