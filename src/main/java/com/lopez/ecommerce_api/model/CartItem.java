@@ -1,6 +1,5 @@
 package com.lopez.ecommerce_api.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,13 +11,14 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Cart {
+public class CartItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
     @OneToOne
-    @JsonIgnore
-    private User user;
-    private Double totalPrice;
+    private Product product;
+    @OneToOne
+    private Cart cart;
+    private int quantity;
 }

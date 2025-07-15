@@ -1,8 +1,7 @@
-package com.lopez.ecommerce_api.service.productservice;
+package com.lopez.ecommerce_api.service.product_service;
 
 import com.lopez.ecommerce_api.dto.RequestProduct;
 import com.lopez.ecommerce_api.model.Product;
-import org.springframework.data.domain.Page;
 
 import java.util.List;
 

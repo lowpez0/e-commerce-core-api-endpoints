@@ -1,11 +1,12 @@
 package com.lopez.ecommerce_api;
 
 import com.lopez.ecommerce_api.dto.RequestProduct;
-import com.lopez.ecommerce_api.model.Product;
 import com.lopez.ecommerce_api.model.Role;
 import com.lopez.ecommerce_api.model.User;
-import com.lopez.ecommerce_api.service.UserService;
-import com.lopez.ecommerce_api.service.productservice.ProductService;
+import com.lopez.ecommerce_api.service.AuthService;
+import com.lopez.ecommerce_api.service.cart_service.CartService;
+import com.lopez.ecommerce_api.service.user_service.UserService;
+import com.lopez.ecommerce_api.service.product_service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -26,15 +27,24 @@ public class EcommerceApiApplication {
 	}
 
 	@Bean
-	CommandLineRunner commandLineRunner(UserService userService, ProductService productService) {
+	CommandLineRunner commandLineRunner(UserService userService,
+										ProductService productService,
+										AuthService authService,
+										CartService cartService) {
 		return args -> {
 			userService.saveRole(new Role(null, "ROLE_CUSTOMER"));
 			userService.saveRole(new Role(null, "ROLE_ADMIN"));
+
 
 			userService.saveUser(new User(null, "dhan paul", "dhan", "dhan@gmail.com", encoder.encode("1234"), new ArrayList<>()));
 			userService.saveUser(new User(null, "mark james", "james", "james@gmail.com", encoder.encode("1234"), new ArrayList<>()));
 			userService.saveUser(new User(null, "lyric ace", "lyric", "lyric@gmail.com", encoder.encode("1234"), new ArrayList<>()));
 			userService.saveUser(new User(null, "ace portgas", "ace", "ace@gmail.com", encoder.encode("1234"), new ArrayList<>()));
+
+			cartService.addCartToUser("dhan");
+			cartService.addCartToUser("james");
+			cartService.addCartToUser("lyric");
+			cartService.addCartToUser("ace");
 
 			userService.addRoleToUser("dhan", "ROLE_ADMIN");
 			userService.addRoleToUser("james", "ROLE_CUSTOMER");

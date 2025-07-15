@@ -2,7 +2,7 @@ package com.lopez.ecommerce_api.controller;
 
 import com.lopez.ecommerce_api.dto.RequestProduct;
 import com.lopez.ecommerce_api.model.Product;
-import com.lopez.ecommerce_api.service.productservice.ProductService;
+import com.lopez.ecommerce_api.service.product_service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

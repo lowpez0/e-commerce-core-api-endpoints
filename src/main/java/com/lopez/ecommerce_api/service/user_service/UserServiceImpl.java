@@ -1,4 +1,4 @@
-package com.lopez.ecommerce_api.service;
+package com.lopez.ecommerce_api.service.user_service;
 
 import com.lopez.ecommerce_api.model.Cart;
 import com.lopez.ecommerce_api.model.Role;
@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -22,13 +21,17 @@ public class UserServiceImpl implements UserService {
 
     private final RoleRepository roleRepo;
     private final UserRepository userRepo;
-    private final CartRepository cartRepo;
 
     @Override
     public User saveUser(User user) {
         log.info("Saving new User {} to the database", user.getUsername());
 
         return userRepo.save(user);
+    }
+
+    @Override
+    public User findByUsername(String username) {
+        return userRepo.findByUsername(username);
     }
 
     @Override
@@ -72,9 +75,4 @@ public class UserServiceImpl implements UserService {
         return roleRepo.findByName(name);
     }
 
-    @Override
-    public void addCartToUser(String username) {
-        User user = userRepo.findByUsername(username);
-        cartRepo.save(new Cart(null, user, 0.0));
-    }
 }

@@ -23,7 +23,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final UserRepository userRepository;
+    //private final UserRepository userRepository;
     private final JwtFilter jwtFilter;
 
     @Bean
@@ -34,6 +34,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/login", "/api/auth/refresh-token", "/api/auth/register").permitAll()
+                        // .requestMatchers(HttpMethod.DELETE, "/api/cart/itemId/**").hasAnyRole("ADMIN", "CUSTOMER")
                         .anyRequest().authenticated())
                         //.requestMatchers(HttpMethod.GET, "/api/users").hasAnyRole("ADMIN", "CUSTOMER"))
                 .sessionManagement(session -> session

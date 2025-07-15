@@ -1,28 +1,30 @@
-package com.lopez.ecommerce_api.service.productservice;
+package com.lopez.ecommerce_api.service.product_service;
 
 import com.lopez.ecommerce_api.dto.RequestProduct;
+import com.lopez.ecommerce_api.model.Cart;
+import com.lopez.ecommerce_api.model.CartItem;
 import com.lopez.ecommerce_api.model.Product;
+import com.lopez.ecommerce_api.repository.CartItemRepository;
 import com.lopez.ecommerce_api.repository.ProductRepository;
+import com.lopez.ecommerce_api.service.user_service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class ProductServiceImpl implements ProductService{
 
-    private final ProductRepository repository;
+    private final ProductRepository productRepo;
+    private final UserService userService;
+    private final CartItemRepository cartItemRepo;
 
     @Override
     public Product saveProduct(RequestProduct request) {
-        if(repository.existsByName(request.getName())) {
+        if(productRepo.existsByName(request.getName())) {
             return null;
         }
         Product product = Product.builder()
@@ -32,20 +34,20 @@ public class ProductServiceImpl implements ProductService{
                 .stockQuantity(request.getStockQuantity())
                 .category(request.getCategory())
                 .build();
-        return repository.save(product);
+        return productRepo.save(product);
     }
 
     @Override
     public Product getProduct(Long id) {
-        return repository.findById(id).orElse(null);
+        return productRepo.findById(id).orElse(null);
     }
 
     @Override
     public Product updateProduct(RequestProduct request, Long id) {
-        if(!repository.existsById(id)) {
+        if(!productRepo.existsById(id)) {
             return null;
         }
-        Product product = repository.findById(id).get(); // Use get() since it returns an Optional<Product>
+        Product product = productRepo.findById(id).get(); // Use get() since it returns an Optional<Product>
         product.setName(request.getName());
         product.setDescription(request.getDescription());
         product.setPrice(request.getPrice());
@@ -56,21 +58,22 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public List<Product> getProducts() {
-        return repository.findAll();
+        return productRepo.findAll();
     }
 
     @Override
     public List<Product> getProductsByCategory(String categoryName) {
-        return repository.findByCategory(categoryName);
+        return productRepo.findByCategory(categoryName);
     }
 
     @Override
     public boolean deleteProduct(Long id) {
-        if(!repository.existsById(id)) {
+        if(!productRepo.existsById(id)) {
             return false;
         }
-        repository.deleteById(id);
+        productRepo.deleteById(id);
         return true;
     }
+
 
 }

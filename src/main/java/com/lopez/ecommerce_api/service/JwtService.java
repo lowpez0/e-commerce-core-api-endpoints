@@ -8,7 +8,6 @@ import com.lopez.ecommerce_api.model.Role;
 import com.lopez.ecommerce_api.model.User;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import java.util.Base64;
@@ -24,7 +23,7 @@ public class JwtService {
     public String generateAccessToken(HttpServletRequest request, User user) {
         return JWT.create()
                 .withSubject(user.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + 30000))
+                .withExpiresAt(new Date(System.currentTimeMillis() + 3000000))
                 .withIssuer(request.getRequestURL().toString())
                 .withClaim("roles", user.getRoles().stream().map(Role::getName).collect(Collectors.toList()))
                 .sign(getSignInKey());

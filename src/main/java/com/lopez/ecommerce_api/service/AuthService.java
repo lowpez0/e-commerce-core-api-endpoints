@@ -3,16 +3,15 @@ package com.lopez.ecommerce_api.service;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.lopez.ecommerce_api.dto.*;
-import com.lopez.ecommerce_api.model.Role;
 import com.lopez.ecommerce_api.model.User;
-import com.lopez.ecommerce_api.service.cartservice.CartService;
+import com.lopez.ecommerce_api.service.cart_service.CartService;
+import com.lopez.ecommerce_api.service.user_service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
@@ -41,8 +40,7 @@ public class AuthService {
                 .build();
         user.getRoles().add(userService.findRoleByName("ROLE_CUSTOMER"));
         userService.saveUser(user);
-        userService.addCartToUser(register.getUsername()); // add a cart immediately right after a user signed up
-        //cartService.addCartToUser(register.getUsername());
+        cartService.addCartToUser(register.getUsername()); // add a cart immediately right after a user signed up
         String accessToken = jwtService.generateAccessToken(request, user);
         String refreshToken = jwtService.generateRefreshToken(request, user);
         return ResponseRegister.builder()
