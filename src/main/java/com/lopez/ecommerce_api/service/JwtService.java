@@ -23,7 +23,7 @@ public class JwtService {
     public String generateAccessToken(HttpServletRequest request, User user) {
         return JWT.create()
                 .withSubject(user.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + 3000000))
+                .withExpiresAt(new Date(System.currentTimeMillis() + 300000000))
                 .withIssuer(request.getRequestURL().toString())
                 .withClaim("roles", user.getRoles().stream().map(Role::getName).collect(Collectors.toList()))
                 .sign(getSignInKey());

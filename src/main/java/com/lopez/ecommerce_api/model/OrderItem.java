@@ -1,7 +1,5 @@
 package com.lopez.ecommerce_api.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.lopez.ecommerce_api.enums.CartItemStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,18 +11,18 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CartItem {
+public class OrderItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
+    @JoinColumn(name = "order_id")
+    private CustomerOrder order;
+    @OneToOne
+    @JoinColumn(name = "product_id")
     private Product product;
-    @ManyToOne
-    @JoinColumn(name = "cart_id")
-    @JsonIgnore
-    private Cart cart;
-    private int quantity;
-    @Enumerated(EnumType.STRING)
-    private CartItemStatus status;
+    private Integer quantity;
+    private Double price;
+
 }

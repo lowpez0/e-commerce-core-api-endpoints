@@ -26,21 +26,21 @@ public class AuthService {
 
     public ResponseRegister registerUser(RequestRegister register,
                                          HttpServletRequest request) {
-        if(userService.existsByUsername(register.getUsername()) ) {
+        if(userService.existsByUsername(register.username()) ) {
             return ResponseRegister.builder().error("Username already exist").registered(false).build();
-        } else if (userService.existsByEmail(register.getEmail())) {
+        } else if (userService.existsByEmail(register.email())) {
             return ResponseRegister.builder().error("Email already exist").registered(false).build();
         }
         User user = User.builder()
-                .fullName(register.getFullName())
-                .username(register.getUsername())
-                .email(register.getEmail())
-                .password(passwordEncoder.encode(register.getPassword()))
+                .fullName(register.fullName())
+                .username(register.username())
+                .email(register.email())
+                .password(passwordEncoder.encode(register.password()))
                 .roles(new ArrayList<>())
                 .build();
         user.getRoles().add(userService.findRoleByName("ROLE_CUSTOMER"));
         userService.saveUser(user);
-        cartService.addCartToUser(register.getUsername()); // add a cart immediately right after a user signed up
+        cartService.addCartToUser(register.username()); // add a cart immediately right after a user signed up
         String accessToken = jwtService.generateAccessToken(request, user);
         String refreshToken = jwtService.generateRefreshToken(request, user);
         return ResponseRegister.builder()

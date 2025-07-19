@@ -1,6 +1,10 @@
 package com.lopez.ecommerce_api.service.cart_service;
 
+import com.lopez.ecommerce_api.dto.RequestCart;
 import com.lopez.ecommerce_api.dto.RequestProduct;
+import com.lopez.ecommerce_api.dto.ResponseCart;
+import com.lopez.ecommerce_api.dto.mapper.ResponseCartMapper;
+import com.lopez.ecommerce_api.enums.CartItemStatus;
 import com.lopez.ecommerce_api.model.Cart;
 import com.lopez.ecommerce_api.model.CartItem;
 import com.lopez.ecommerce_api.model.Product;
@@ -12,6 +16,7 @@ import com.lopez.ecommerce_api.service.user_service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 
 
 @Service
@@ -30,25 +35,39 @@ public class CartServiceImpl implements CartService{
         if(product.getStockQuantity() == 0) {
             return false;
         }
-        Cart cart = getCart(username);
-        cartItemRepo.save(new CartItem(null, product, cart, request.getQuantity()));
+        Cart cart = getCartByUsername(username);
+        cartItemRepo.save(new CartItem(null, product, cart, request.getQuantity(), CartItemStatus.PENDING));
         return true;
-
     }
 
     @Override
     public void addCartToUser(String username) {
         User user = userService.findByUsername(username);
-        cartRepo.save(new Cart(null, user, 0.0));
+        cartRepo.save(new Cart(null, user));
     }
 
     @Override
-    public Cart getCart(String username) {
+    public ResponseCart getCart(String username) {
+        Cart cart = userService.findByUsername(username).getCart();
+        return ResponseCart.fromEntity(cart);
+    }
+
+    @Override
+    public Cart getCartByUsername(String username) {
         return userService.findByUsername(username).getCart();
     }
 
     @Override
     public void deleteCartItem(Long id) {
         cartItemRepo.deleteById(id);
+    }
+
+    @Override
+    public void updateCartItems(RequestCart requestCart) {
+        requestCart.cart().forEach(Item -> {
+            CartItem cartItem = cartItemRepo.findById(Item.id()).orElseThrow();
+            cartItem.setQuantity(Item.quantity());
+            cartItem.setStatus(CartItemStatus.SELECTED);
+        });
     }
 }

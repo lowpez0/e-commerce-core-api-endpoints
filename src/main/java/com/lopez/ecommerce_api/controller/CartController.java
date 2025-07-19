@@ -1,11 +1,9 @@
 package com.lopez.ecommerce_api.controller;
 
+import com.lopez.ecommerce_api.dto.RequestCart;
 import com.lopez.ecommerce_api.dto.RequestProduct;
 import com.lopez.ecommerce_api.dto.ResponseCart;
-import com.lopez.ecommerce_api.model.Cart;
 import com.lopez.ecommerce_api.service.cart_service.CartService;
-import com.lopez.ecommerce_api.service.user_service.UserService;
-import com.lopez.ecommerce_api.service.product_service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,13 +20,13 @@ public class CartController {
     private final CartService cartService;
 
     @GetMapping
-    public ResponseEntity<?> getCart(Principal principal) {
-        Cart cart = cartService.getCart(principal.getName());
-        return new ResponseEntity<>(ResponseCart.builder().price(cart.getTotalPrice()).build(), HttpStatus.OK);
+    public ResponseEntity<ResponseCart> getCart(Principal principal) {
+        ResponseCart responseCart = cartService.getCart(principal.getName());
+        return new ResponseEntity<>(responseCart, HttpStatus.OK);
     }
 
     @PostMapping("/add")
-    public ResponseEntity<?> addProductToCart(@RequestBody RequestProduct product,
+    public ResponseEntity<Map<String, String>> addProductToCart(@RequestBody RequestProduct product,
                                               Principal principal) {
         boolean ifAddedToCart = cartService.addProductToCart(product, principal.getName());
         if(!ifAddedToCart) {
@@ -42,4 +40,11 @@ public class CartController {
         cartService.deleteCartItem(id);
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
+
+    @PutMapping("/update")
+    public ResponseEntity<?> updateCartItems(@RequestBody RequestCart requestCart) {
+        cartService.updateCartItems(requestCart);
+        return new ResponseEntity<>(Map.of("message:", "Updated successfully"), HttpStatus.OK);
+    }
+
 }

@@ -27,6 +27,8 @@ public class User  {
     private List<Role> roles = new ArrayList<>();
     @OneToOne(mappedBy = "user")
     private Cart cart;
+    @OneToMany(mappedBy = "user")
+    private List<CustomerOrder> orders = new ArrayList<>();
 
     public User(Long id, String fullName, String username, String email, String password, List<Role> roles) {
         this.id = id;

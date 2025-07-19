@@ -7,6 +7,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Data
 @Builder
@@ -20,5 +23,17 @@ public class Cart {
     @OneToOne
     @JsonIgnore
     private User user;
-    private Double totalPrice;
+    @OneToMany(mappedBy = "cart")
+    private List<CartItem> cartItems = new ArrayList<>();
+
+    public Cart(Integer id, User user) {
+        this.id = id;
+        this.user = user;
+    }
+
+    public static List<OrderItem> fromEntity(Cart cart) {
+        List<OrderItem> itemList = new ArrayList<>();
+
+        return null;
+    }
 }

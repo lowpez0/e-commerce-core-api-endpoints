@@ -1,8 +1,6 @@
 package com.lopez.ecommerce_api.service.product_service;
 
 import com.lopez.ecommerce_api.dto.RequestProduct;
-import com.lopez.ecommerce_api.model.Cart;
-import com.lopez.ecommerce_api.model.CartItem;
 import com.lopez.ecommerce_api.model.Product;
 import com.lopez.ecommerce_api.repository.CartItemRepository;
 import com.lopez.ecommerce_api.repository.ProductRepository;
@@ -47,7 +45,7 @@ public class ProductServiceImpl implements ProductService{
         if(!productRepo.existsById(id)) {
             return null;
         }
-        Product product = productRepo.findById(id).get(); // Use get() since it returns an Optional<Product>
+        Product product = productRepo.findById(id).get(); // success since we checked already if it exists
         product.setName(request.getName());
         product.setDescription(request.getDescription());
         product.setPrice(request.getPrice());

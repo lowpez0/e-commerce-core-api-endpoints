@@ -1,15 +1,35 @@
 package com.lopez.ecommerce_api.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.lopez.ecommerce_api.model.Cart;
 
-@Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-public class ResponseCart {
+import java.util.ArrayList;
+import java.util.List;
 
-    private Double price;
+public record ResponseCart(
+        Integer cartId,
+        List<Items> items
+) {
+
+   //convert entity to dto
+   public static ResponseCart fromEntity(Cart cart) {
+       if(cart.getCartItems().isEmpty()) {
+           return new ResponseCart(cart.getId(), new ArrayList<>());
+       }
+       List<Items> list = cart.getCartItems().stream()
+               .map(cartItem -> new Items(
+                      cartItem.getId(),
+                      cartItem.getProduct().getName(),
+                      cartItem.getProduct().getPrice(),
+                      cartItem.getQuantity()
+              )).toList();
+       return new ResponseCart(cart.getId(), list);
+   }
+
+   public record Items(
+        Long cartItemId,
+        String name,
+        Double price,
+        Integer quantity
+
+   ) {}
 }
