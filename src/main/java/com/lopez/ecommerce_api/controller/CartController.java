@@ -44,7 +44,7 @@ public class CartController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<?> updateCartItems(@RequestBody RequestCart requestCart) {
+    public ResponseEntity<Map<String, String>> updateCartItems(@RequestBody RequestCart requestCart) {
         try {
             cartService.updateCartItems(requestCart);
             return new ResponseEntity<>(Map.of("message:", "Updated successfully"), HttpStatus.OK);

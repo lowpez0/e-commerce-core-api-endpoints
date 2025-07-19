@@ -2,15 +2,12 @@ package com.lopez.ecommerce_api.service.product_service;
 
 import com.lopez.ecommerce_api.dto.RequestProduct;
 import com.lopez.ecommerce_api.model.Product;
-import com.lopez.ecommerce_api.repository.CartItemRepository;
 import com.lopez.ecommerce_api.repository.ProductRepository;
-import com.lopez.ecommerce_api.service.user_service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

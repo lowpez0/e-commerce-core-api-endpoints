@@ -46,7 +46,7 @@ public class CartServiceImpl implements CartService{
     @Override
     public ResponseCart getCart(String username) {
         Cart cart = userService.findByUsername(username).getCart();
-        return ResponseCart.fromEntity(cart);
+        return ResponseCart.toDto(cart);
     }
 
     @Override

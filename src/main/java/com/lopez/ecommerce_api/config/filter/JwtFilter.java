@@ -9,7 +9,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -36,10 +35,12 @@ public class JwtFilter extends OncePerRequestFilter {
     protected void doFilterInternal(@NonNull HttpServletRequest request,
                                     @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
-        if (request.getServletPath().equals("/api/auth/login") || request.getServletPath().equals("/api/auth/refresh-token")
+        /*if (request.getServletPath().equals("/api/auth/login") || request.getServletPath().equals("/api/auth/refresh-token")
                 || request.getServletPath().equals("/api/auth/register") ) {
             filterChain.doFilter(request, response);
         } else {
+
+         */
             String authorizationHeader = request.getHeader(AUTHORIZATION);
             if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
                 try {
@@ -73,4 +74,4 @@ public class JwtFilter extends OncePerRequestFilter {
             }
         }
     }
-}
+

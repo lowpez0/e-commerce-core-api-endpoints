@@ -32,7 +32,7 @@ public class ProductController {
     public ResponseEntity<?> getProductById(@PathVariable Long id) {
         Product product = productService.getProductById(id);
         if(product == null) {
-            return new ResponseEntity<>("Product with ID: " + id + " does not exist", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(Map.of("error: ", "Product with ID: " + id + " does not exist" ), HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(product, HttpStatus.OK);
     }

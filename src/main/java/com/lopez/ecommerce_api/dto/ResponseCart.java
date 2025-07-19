@@ -11,7 +11,7 @@ public record ResponseCart(
 ) {
 
    //convert entity to dto
-   public static ResponseCart fromEntity(Cart cart) {
+   public static ResponseCart toDto(Cart cart) {
        if(cart.getCartItems().isEmpty()) {
            return new ResponseCart(cart.getId(), new ArrayList<>());
        }

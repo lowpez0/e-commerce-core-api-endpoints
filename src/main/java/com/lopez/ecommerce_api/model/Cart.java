@@ -31,9 +31,4 @@ public class Cart {
         this.user = user;
     }
 
-    public static List<OrderItem> fromEntity(Cart cart) {
-        List<OrderItem> itemList = new ArrayList<>();
-
-        return null;
-    }
 }
