@@ -6,7 +6,7 @@ public record RequestCart(
         List<CartItems> cart
 ) {
     public record CartItems(
-            Long id,
+            Long cartItemId,
             Integer quantity
     ) {
 

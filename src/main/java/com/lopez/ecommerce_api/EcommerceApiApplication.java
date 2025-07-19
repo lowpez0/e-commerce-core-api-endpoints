@@ -1,8 +1,11 @@
 package com.lopez.ecommerce_api;
 
 import com.lopez.ecommerce_api.dto.RequestProduct;
+import com.lopez.ecommerce_api.enums.CartItemStatus;
+import com.lopez.ecommerce_api.model.CartItem;
 import com.lopez.ecommerce_api.model.Role;
 import com.lopez.ecommerce_api.model.User;
+import com.lopez.ecommerce_api.repository.CartItemRepository;
 import com.lopez.ecommerce_api.service.AuthService;
 import com.lopez.ecommerce_api.service.cart_service.CartService;
 import com.lopez.ecommerce_api.service.user_service.UserService;
@@ -21,6 +24,7 @@ import java.util.ArrayList;
 public class EcommerceApiApplication {
 
 	private final PasswordEncoder encoder;
+	private final CartItemRepository cartItemRepo;
 
 	public static void main(String[] args) {
 		SpringApplication.run(EcommerceApiApplication.class, args);
@@ -50,7 +54,6 @@ public class EcommerceApiApplication {
 			userService.addRoleToUser("james", "ROLE_CUSTOMER");
 			userService.addRoleToUser("lyric", "ROLE_CUSTOMER");
 			userService.addRoleToUser("ace", "ROLE_CUSTOMER");
-			userService.addRoleToUser("ace", "ROLE_CUSTOMER");
 
 			productService.saveProduct(new RequestProduct("Galaxy S25", "6.8\" AMOLED, 200MP camera", 1199.99, 15, "MOBILE"));
 			productService.saveProduct(new RequestProduct("iPhone 16 Pro", "A18 chip, titanium design", 1299.00, 10, "MOBILE"));
@@ -67,6 +70,7 @@ public class EcommerceApiApplication {
 			productService.saveProduct(new RequestProduct("AirPods Pro 2", "Active noise cancellation", 249.00, 25, "ACCESSORIES"));
 			productService.saveProduct(new RequestProduct("Logitech MX Keys", "Wireless ergonomic keyboard", 99.95, 18, "ACCESSORIES"));
 			productService.saveProduct(new RequestProduct("Samsung T7 SSD", "1TB portable SSD", 89.99, 30, "ACCESSORIES"));
+
 		};
 	}
 

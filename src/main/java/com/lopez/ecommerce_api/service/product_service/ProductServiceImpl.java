@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -17,8 +18,6 @@ import java.util.List;
 public class ProductServiceImpl implements ProductService{
 
     private final ProductRepository productRepo;
-    private final UserService userService;
-    private final CartItemRepository cartItemRepo;
 
     @Override
     public Product saveProduct(RequestProduct request) {
@@ -36,7 +35,12 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public Product getProduct(Long id) {
+    public Product getProductByName(String name) {
+        return productRepo.findByName(name);
+    }
+
+    @Override
+    public Product getProductById(Long id) {
         return productRepo.findById(id).orElse(null);
     }
 
@@ -71,6 +75,12 @@ public class ProductServiceImpl implements ProductService{
         }
         productRepo.deleteById(id);
         return true;
+    }
+
+    @Override
+    public void updateProductStock(Product product, int quantity) {
+        int updatedStock = product.getStockQuantity() - quantity;
+        product.setStockQuantity(updatedStock);
     }
 
 

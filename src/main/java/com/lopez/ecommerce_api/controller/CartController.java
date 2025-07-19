@@ -3,6 +3,7 @@ package com.lopez.ecommerce_api.controller;
 import com.lopez.ecommerce_api.dto.RequestCart;
 import com.lopez.ecommerce_api.dto.RequestProduct;
 import com.lopez.ecommerce_api.dto.ResponseCart;
+import com.lopez.ecommerce_api.exception.OutOfStockException;
 import com.lopez.ecommerce_api.service.cart_service.CartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,13 +27,14 @@ public class CartController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Map<String, String>> addProductToCart(@RequestBody RequestProduct product,
-                                              Principal principal) {
-        boolean ifAddedToCart = cartService.addProductToCart(product, principal.getName());
-        if(!ifAddedToCart) {
-            return new ResponseEntity<>(Map.of("error", "Product is out of stuck"), HttpStatus.CONFLICT);
+    public ResponseEntity<Map<String, String>> addProductToCart(@RequestBody RequestProduct product, Principal principal) {
+        try {
+            cartService.addCartItemToCart(product, principal.getName());
+            return new ResponseEntity<>(Map.of("message", "Added to cart"), HttpStatus.OK);
+
+        } catch (OutOfStockException e) {
+            return new ResponseEntity<>(Map.of("error", e.getMessage()), HttpStatus.GONE);
         }
-        return new ResponseEntity<>(Map.of("message", "Added to cart"), HttpStatus.OK);
     }
 
     @DeleteMapping("/itemId/{id}")
@@ -43,8 +45,13 @@ public class CartController {
 
     @PutMapping("/update")
     public ResponseEntity<?> updateCartItems(@RequestBody RequestCart requestCart) {
-        cartService.updateCartItems(requestCart);
-        return new ResponseEntity<>(Map.of("message:", "Updated successfully"), HttpStatus.OK);
+        try {
+            cartService.updateCartItems(requestCart);
+            return new ResponseEntity<>(Map.of("message:", "Updated successfully"), HttpStatus.OK);
+
+        } catch (OutOfStockException e) {
+            return new ResponseEntity<>(Map.of("error:", e.getMessage()), HttpStatus.GONE);
+        }
     }
 
 }

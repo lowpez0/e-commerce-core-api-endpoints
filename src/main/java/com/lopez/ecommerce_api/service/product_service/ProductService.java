@@ -9,11 +9,13 @@ public interface ProductService {
 
 
     Product saveProduct(RequestProduct product);
-    Product getProduct(Long id);
+    Product getProductById(Long id);
+    Product getProductByName(String name);
     Product updateProduct(RequestProduct request, Long id);
     List<Product> getProducts();
     List<Product> getProductsByCategory(String categoryName);
     boolean deleteProduct(Long id);
+    void updateProductStock(Product product, int quantity);
 
 }
 
