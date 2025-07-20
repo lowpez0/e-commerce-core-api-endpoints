@@ -1,6 +1,6 @@
 # 🛍️ Spring Boot E-Commerce REST API
 
-Core API endpoints only
+Core E-commerce api endpoints 
 
 ## 🌟 Features
 - JWT Authentication (Register/Login)
