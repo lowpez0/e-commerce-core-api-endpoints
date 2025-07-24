@@ -11,22 +11,30 @@ import com.lopez.ecommerce_api.service.cart_service.CartService;
 import com.lopez.ecommerce_api.service.user_service.UserService;
 import com.lopez.ecommerce_api.service.product_service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.retry.annotation.EnableRetry;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
 
 @SpringBootApplication
-@RequiredArgsConstructor
+@EnableRetry
 public class EcommerceApiApplication {
 
-	private final PasswordEncoder encoder;
-	private final CartItemRepository cartItemRepo;
+	private PasswordEncoder encoder;
 
-	public static void main(String[] args) {
+	@Autowired
+    public EcommerceApiApplication(PasswordEncoder encoder) {
+        this.encoder = encoder;
+		System.out.println("SKIBIDI\n\n\n\n\n\n\n\n\n\n");
+    }
+
+    public static void main(String[] args) {
 		SpringApplication.run(EcommerceApiApplication.class, args);
 	}
 

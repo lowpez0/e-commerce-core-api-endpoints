@@ -8,6 +8,7 @@ import com.lopez.ecommerce_api.service.cart_service.CartService;
 import com.lopez.ecommerce_api.service.user_service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,6 @@ import java.util.ArrayList;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @Service
-@RequiredArgsConstructor
 public class AuthService {
 
     private final PasswordEncoder passwordEncoder;
@@ -24,11 +24,18 @@ public class AuthService {
     private final JwtService jwtService;
     private final CartService cartService;
 
+    public AuthService(PasswordEncoder passwordEncoder, UserService userService, JwtService jwtService, CartService cartService) {
+        this.passwordEncoder = passwordEncoder;
+        this.userService = userService;
+        this.jwtService = jwtService;
+        this.cartService = cartService;
+        System.out.println("HEY\n\n\n\n\n\n\n\n\"");
+    }
+
     public ResponseRegister registerUser(RequestRegister register,
                                          HttpServletRequest request) {
         if(userService.existsByUsername(register.username()) ) {
-            return ResponseRegister.builder().error("Username already exist").registered(false).build();
-        } else if (userService.existsByEmail(register.email())) {
+            return ResponseRegister.builder().error("Username already exist").registered(false).build();} else if (userService.existsByEmail(register.email())) {
             return ResponseRegister.builder().error("Email already exist").registered(false).build();
         }
         User user = User.builder()

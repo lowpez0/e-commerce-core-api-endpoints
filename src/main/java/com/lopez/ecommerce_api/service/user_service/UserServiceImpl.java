@@ -8,6 +8,7 @@ import com.lopez.ecommerce_api.repository.RoleRepository;
 import com.lopez.ecommerce_api.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.BootstrapRegistry;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

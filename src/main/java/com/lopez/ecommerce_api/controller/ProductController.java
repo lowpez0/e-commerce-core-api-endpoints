@@ -49,6 +49,7 @@ public class ProductController {
     @PutMapping("/update/{id}")
     public ResponseEntity<Map<String, String>> updateProduct(@RequestBody RequestProduct request,
                                                 @PathVariable Long id) {
+        System.out.println("asdasd");
         Product product = productService.updateProduct(request, id);
         if(product == null) {
             return new ResponseEntity<>(Map.of("error", "Product with ID:" + id +  "does not exist"), HttpStatus.NOT_FOUND);

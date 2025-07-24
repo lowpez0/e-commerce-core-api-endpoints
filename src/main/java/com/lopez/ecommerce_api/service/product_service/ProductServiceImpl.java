@@ -3,7 +3,10 @@ package com.lopez.ecommerce_api.service.product_service;
 import com.lopez.ecommerce_api.dto.RequestProduct;
 import com.lopez.ecommerce_api.model.Product;
 import com.lopez.ecommerce_api.repository.ProductRepository;
+import jakarta.persistence.OptimisticLockException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -74,11 +77,15 @@ public class ProductServiceImpl implements ProductService{
         return true;
     }
 
+    @Retryable(
+            value = OptimisticLockException.class,  // Retry on this exception
+            maxAttempts = 3,                       // Max retries
+            backoff = @Backoff(delay = 20)        // Delay between retries (ms)
+    )
     @Override
     public void updateProductStock(Product product, int quantity) {
         int updatedStock = product.getStockQuantity() - quantity;
-        product.setStockQuantity(updatedStock);
+            product.setStockQuantity(updatedStock);
+
     }
-
-
 }
