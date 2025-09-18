@@ -1,22 +1,22 @@
-# 🛍️ Spring Boot E-Commerce REST API
+# Spring Boot E-Commerce REST API
 
 Core E-commerce api endpoints 
 
-## 🌟 Features
+## Features
 - JWT Authentication (Register/Login)
 - Role-based Access Control (Customer/Admin/)
 - Product Catalog 
 - Shopping Cart System
 - Order Processing
 
-## 🛠️ Tech Stack
+## Tech Stack
 - Java 17 + Spring Boot 3
 - Spring Security + JWT
 - MySQL
 
-## 🔌 API Endpoints
+## API Endpoints
 
-### 🔐 Authentication
+### Authentication
 | Method | Endpoint                 | Description            
 |--------|--------------------------|------------------------
 | POST   | `/api/auth/register`     | User registration      
@@ -33,7 +33,7 @@ Core E-commerce api endpoints
 | PUT    | `/api/products/update/{id}`        | Update product          | ADMIN         |
 | DELETE | `/api/products/delete/{id}`        | Delete product          | ADMIN         |
 
-### 🛍️ Cart
+### Cart
 | Method | Endpoint                    | Description            | Auth Required |
 |--------|-----------------------------|------------------------|---------------|
 | GET    | `/api/cart`                 | Get user cart          | Yes           |
@@ -41,7 +41,7 @@ Core E-commerce api endpoints
 | PUT    | `/api/cart/update`          | Update item quantity   | Yes           |
 | DELETE | `/api/cart/itemId/{itemId}` | Remove item from cart  | Yes           |
 
-### 📦 Orders
+### Orders
 | Method | Endpoint                      | Description            | Auth Required |
 |--------|-------------------------------|------------------------|---------------|
 | POST   | `/api/orders/checkout`        | Create order           | Yes           |
