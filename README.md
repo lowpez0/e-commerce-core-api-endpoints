@@ -23,7 +23,7 @@ Core E-commerce api endpoints
 | POST   | `/api/auth/login`        | JWT authentication     
 | GET    | `/api/auth/refresh-token`| refresh access-token 
 
-### 🛒 Products
+### Products
 | Method | Endpoint                           | Description             | Roles         |
 |--------|------------------------------------|-------------------------|---------------|
 | GET    | `/api/products/category{category}` | Get products by category| Public        |
