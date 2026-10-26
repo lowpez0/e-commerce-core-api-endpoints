@@ -1,29 +1,25 @@
-# Spring Boot E-Commerce REST API
-
-Core E-commerce api endpoints 
-
-## Features
+Spring Boot E-Commerce REST API 
+Features
 - JWT Authentication (Register/Login)
 - Role-based Access Control (Customer/Admin/)
 - Product Catalog 
 - Shopping Cart System
 - Order Processing
-
-## Tech Stack
+Stack used
 - Java 17 + Spring Boot 3
 - Spring Security + JWT
 - MySQL
 
-## API Endpoints
+Endpoints
 
-### Authentication
+Authentication
 | Method | Endpoint                 | Description            
 |--------|--------------------------|------------------------
 | POST   | `/api/auth/register`     | User registration      
 | POST   | `/api/auth/login`        | JWT authentication     
 | GET    | `/api/auth/refresh-token`| refresh access-token 
 
-### Products
+Products
 | Method | Endpoint                           | Description             | Roles         |
 |--------|------------------------------------|-------------------------|---------------|
 | GET    | `/api/products/category{category}` | Get products by category| Public        |
@@ -33,7 +29,7 @@ Core E-commerce api endpoints
 | PUT    | `/api/products/update/{id}`        | Update product          | ADMIN         |
 | DELETE | `/api/products/delete/{id}`        | Delete product          | ADMIN         |
 
-### Cart
+Cart
 | Method | Endpoint                    | Description            | Auth Required |
 |--------|-----------------------------|------------------------|---------------|
 | GET    | `/api/cart`                 | Get user cart          | Yes           |
@@ -41,7 +37,7 @@ Core E-commerce api endpoints
 | PUT    | `/api/cart/update`          | Update item quantity   | Yes           |
 | DELETE | `/api/cart/itemId/{itemId}` | Remove item from cart  | Yes           |
 
-### Orders
+Orders
 | Method | Endpoint                      | Description            | Auth Required |
 |--------|-------------------------------|------------------------|---------------|
 | POST   | `/api/orders/checkout`        | Create order           | Yes           |
