@@ -5,6 +5,7 @@ Features
 - Product Catalog 
 - Shopping Cart System
 - Order Processing
+  
 Stack used
 - Java 17 + Spring Boot 3
 - Spring Security + JWT
